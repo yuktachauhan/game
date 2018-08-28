@@ -1,13 +1,15 @@
 var myGamePiece;
+var backGround;
 function gameBegin(){
   myGamePiece = new component(120,150,"glider.png",700,550, "image",755);
+ backGround=new component(1560,750,"galaxy.jpg",0,0,"image");
   field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
   canvas:document.createElement("canvas"),                /*field is an object which creates canvas*/                                                                                                          
   canvasArea:function(){
-this.canvas.width=1510;
-this.canvas.height=700;
+this.canvas.width=1500;
+this.canvas.height=720;
 this.context=this.canvas.getContext("2d");
 document.body.insertBefore(this.canvas,document.body.childNodes[0]);/*The canvasArea() method creates a <canvas> element and inserts it as the
 first child node of the body element*/
@@ -50,12 +52,14 @@ this.newPos=function(){                       /*this function is to change the p
 } 
 function updateGameArea(){
   field.cleanTrail();
+  backGround.newPos();
+  backGround.update();
   myGamePiece.speedX=0;
   if(field.key&&field.key==37){
-    myGamePiece.speedX=-1;
+    myGamePiece.speedX=-2;
   }
   if(field.key&&field.key==39){
-    myGamePiece.speedX=1;
+    myGamePiece.speedX=2;
   }
   myGamePiece.newPos();
   myGamePiece.update();
