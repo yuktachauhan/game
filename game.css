@@ -2,3 +2,11 @@ canvas{
     border: 3px solid #444;
     background-color:#000;
   }
+  button{
+    color:black;
+    background-color: yellow;
+  }
+  #buttons{
+    text-align: center;
+    width:1510px;
+  }
