@@ -1,16 +1,8 @@
 var myGamePiece;
-var score,obstacle,o2,o3,o4,o5,o6,o7,o8;
+var score,obstacles=[];
 function gameBegin(){
-  myGamePiece = new component(100,150,"glider.png",700,550, "image");
-  obstacle=new component(80,60,"enemy.png",Math.random()*1000,0,"image");
-  o2=new component(60,50,"enemy.png",Math.random()*600,0,"image");
- o3=new component(80,80,"enemy.png",Math.random()*700,0,"image");
- o4=new component(60,70,"enemy.png",Math.random()*800,0,"image");
-   o5=new component(80,70,"enemy.png",Math.random()*600,0,"image");  
-   o6=new component(80,70,"enemy.png",Math.random()*500,0,"image");  
-   o7=new component(80,70,"enemy.png",Math.random()*900,0,"image");  
-   o8=new component(80,70,"enemy.png",Math.random()*800,0,"image");  
-  score=new component("40px","Consolas","red",640,30,"text");
+  myGamePiece = new component(100,180,"glider.png",700,550, "image");
+  //score=new component("40px","Consolas","red",640,30,"text");
  field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
@@ -51,11 +43,11 @@ this.x=x;
 this.y=y;
 this.update=function(){
   ctx=field.context;
-   if(this.type=="text"){
+   /*if(this.type=="text"){
     ctx.font=this.width+" "+this.height;
     ctx.fillStyle=color;
     ctx.fillText(this.text,this.x,this.y);
-  }
+  }*/
   if(type=="image"){
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
   }
@@ -65,7 +57,7 @@ this.update=function(){
   }
 }
 this.newPos=function(){
-  if(this.width+this.x>field.canvas.width) {
+  if(this.width+this.x>field.canvas.width) {    /*boundary conditions */
     this.x-=1;
   }
  else if(this.x<0){
@@ -96,63 +88,35 @@ this.crashWith = function(otherobj) {
 }
 } 
 function updateGameArea(){
-  if(myGamePiece.crashWith(obstacle))
-  {
+  for (i = 0; i < obstacles.length; i += 1) {
+    if (myGamePiece.crashWith(obstacles[i])) {
     field.stop();
+        return;
+    } 
   }
-  else if(myGamePiece.crashWith(o2))
-  {
-    field.stop();
-  }
-   else if(myGamePiece.crashWith(o3))
-  {
-    field.stop();
-  }
-  else if(myGamePiece.crashWith(o4))
-  {
-    field.stop();
-  }
-  else if(myGamePiece.crashWith(o5)){
-    field.stop();
-  }
-  else if(myGamePiece.crashWith(o6)){
-    field.stop();
-  }
-  else if(myGamePiece.crashWith(o7)){
-    field.stop();
-  }
-  else if(myGamePiece.crashWith(o8)){
-    field.stop();
-  }
-  else{
-  field.cleanTrail();
-  obstacle.y+=2;
-  obstacle.update();
-  o2.y+=2;
-  o2.update();
-  o3.y+=2;
-  o3.update();
-  o4.y+=2;
-  o4.update();
-  o5.y+=2;
-  o5.update();
-  o6.y+=2;
-  o6.update();
-  o7.y+=2;
-  o7.update();
-  o8.y+=2;
-  o8.update();
-  field.frameNo+=1;
-  score.text="SCORE= " + field.frameNo;
-  score.update();
-  myGamePiece.speedX=0;
-  if(field.key&&field.key==37){
-    myGamePiece.speedX=-5;
-  }
-  if(field.key&&field.key==39){
-    myGamePiece.speedX=5;
-  }
-  myGamePiece.newPos();
-  myGamePiece.update();
+field.cleanTrail();
+myGamePiece.speedX=0;
+field.frameNo += 1;
+if(everyinterval(50)){
+  x = field.canvas.width-(Math.random()*1500);
+  y = field.canvas.height-650;  
+  obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
 }
+for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=5;
+    obstacles[i].update();
+}
+if(field.key&&field.key==37){
+  myGamePiece.speedX=-5;
+}
+if(field.key&&field.key==39){
+  myGamePiece.speedX=5;
+}
+myGamePiece.newPos();    
+myGamePiece.update();
+obstacles.update();
+}
+function everyinterval(n) {
+if ((field.frameNo / n) % 1 == 0) {return true;}
+return false;
 }
