@@ -2,7 +2,7 @@ var myGamePiece;
 var score,obstacles=[];
 function gameBegin(){
   myGamePiece = new component(100,180,"glider.png",700,550, "image");
-  //score=new component("40px","Consolas","red",640,30,"text");
+  score=new component("40px","Consolas","red",640,30,"text");
  field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
@@ -43,11 +43,11 @@ this.x=x;
 this.y=y;
 this.update=function(){
   ctx=field.context;
-   /*if(this.type=="text"){
+   if(this.type=="text"){
     ctx.font=this.width+" "+this.height;
     ctx.fillStyle=color;
     ctx.fillText(this.text,this.x,this.y);
-  }*/
+  }
   if(type=="image"){
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
   }
@@ -97,6 +97,8 @@ function updateGameArea(){
 field.cleanTrail();
 myGamePiece.speedX=0;
 field.frameNo += 1;
+score.text="SCORE:"+field.frameNo;
+score.update();
 if(everyinterval(50)){
   x = field.canvas.width-(Math.random()*1500);
   y = field.canvas.height-650;  
