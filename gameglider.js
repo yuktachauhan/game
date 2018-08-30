@@ -1,11 +1,10 @@
 var myGamePiece;
-var backGround;
-var score;
+var score,obstacle;
 function gameBegin(){
   myGamePiece = new component(120,150,"glider.png",700,550, "image");
- backGround=new component(1500,700,"galaxy.jpg",0,20,"background");
- score=new component("40px","Consolas","red",640,30,"text");
-  field.canvasArea();              /* this will call the method canvasArea of field object*/
+  obstacle=new component(20,30,"yellow",40,40);
+  score=new component("40px","Consolas","red",640,30,"text");
+ field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
   canvas:document.createElement("canvas"),                /*field is an object which creates canvas*/                                                                                                          
@@ -33,7 +32,7 @@ this.frameNo=0;
 }
 function component(width,height,color,x,y,type){
   this.type=type;
-  if(type=="image" || type=="background"){
+  if(type=="image"){
     this.image=new Image();
     this.image.src = color;
   }
@@ -50,51 +49,65 @@ this.update=function(){
     ctx.fillStyle=color;
     ctx.fillText(this.text,this.x,this.y);
   }
-  if(type=="image" || type=="background"){
+  if(type=="image"){
     ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
-    if(type=="background"){
-      ctx.drawImage(this.image,this.x,this.y+this.height,this.width,this.height);/*this is done to move the background in y directio*/
-    }
   }
  else{
     ctx.fillStyle=color;
     ctx.fillRect(this.x,this.y,this.width,this.height);
   }
 }
-this.newPos=function(){                       /*this function is to change the position of the image using buttons*/
+this.newPos=function(){
+  if(this.width+this.x>field.canvas.width) {
+    this.x-=1;
+  }
+ else if(this.x<0){
+    this.x+=1;
+  }
+  else{                    /*this function is to change the position of the image using buttons*/
   this.x +=this.speedX;
   this.y +=this.speedY;
-  if(this.type=="background"){
-    if(this.y==-(this.height)){
-      this.y=0;
-    }
   }
+}
+this.crashWith = function(otherobj) {
+  var myleft = this.x;
+  var myright = this.x + (this.width);
+  var mytop = this.y;
+  var mybottom = this.y + (this.height);
+  var otherleft = otherobj.x;
+  var otherright = otherobj.x + (otherobj.width);
+  var othertop = otherobj.y;
+  var otherbottom = otherobj.y + (otherobj.height);
+  var crash = true;
+  if ((mybottom < othertop) ||
+         (mytop > otherbottom) ||
+         (myright < otherleft) ||
+         (myleft > otherright)) {
+     crash = false;
+  }
+  return crash;
 }
 } 
 function updateGameArea(){
+  if(myGamePiece.crashWith(obstacle))
+  {
+    field.stop();
+  }
+  else{
   field.cleanTrail();
+  obstacle.y+=2;
+  obstacle.update();
   field.frameNo+=1;
   score.text="SCORE= " + field.frameNo;
   score.update();
-  backGround.speedY=+1;
-  backGround.newPos();
-  backGround.update();
   myGamePiece.speedX=0;
   if(field.key&&field.key==37){
-    myGamePiece.speedX=-2;
+    myGamePiece.speedX=-5;
   }
   if(field.key&&field.key==39){
-    myGamePiece.speedX=2;
+    myGamePiece.speedX=5;
   }
   myGamePiece.newPos();
   myGamePiece.update();
 }
-/*function left(){
-  myGamePiece.speedX -=1;
 }
-function right(){
-  myGamePiece.speedX +=1;
-}
-function stopMove(){
-  myGamePiece.speedX=0;
-}*/
