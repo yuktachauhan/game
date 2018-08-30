@@ -1,7 +1,10 @@
 var myGamePiece;
 var score,obstacles=[];
+//var enemy=[];
+var mySound;
 function gameBegin(){
   myGamePiece = new component(100,180,"glider.png",700,550, "image");
+ mySound=new sound("sound.mp3");
   score=new component("40px","Consolas","red",640,40,"text");
  field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
@@ -90,10 +93,19 @@ this.crashWith = function(otherobj) {
 function updateGameArea(){
   for (i = 0; i < obstacles.length; i += 1) {
     if (myGamePiece.crashWith(obstacles[i])) {
-    field.stop();
+      mySound.play();
+      field.stop();
+      document.getElementById("score").innerHTML=score.text;
         return;
     } 
   }
+ /* for (i = 0; i < enemy.length; i += 1) {
+    if (myGamePiece.crashWith(enemy[i])) {
+    //mySound.play();
+      field.stop();
+        return;
+    } 
+  }*/
 field.cleanTrail();
 myGamePiece.speedX=0;
 field.frameNo += 1;
@@ -101,26 +113,31 @@ score.text="SCORE:"+field.frameNo;
 score.update();
 if(everyinterval(40)){
   x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
-  y = field.canvas.height-700;  //y will take values from (720-700) below
+  y = field.canvas.height-720;  //y will take values from (720-700) below
   obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
 }
 for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=5;
     obstacles[i].update();
 }
+if(field.frameNo>=500){
+  for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=7;
+    obstacles[i].update();
+}
+} 
 if(field.frameNo>=800){
+  if(everyinterval(30)){
+  x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
+  y = field.canvas.height-700;  //y will take values from (720-700) below
+  obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+}
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=8;
     obstacles[i].update();
 }
 } 
 if(field.frameNo>=1200){
-  for (i = 0; i < obstacles.length; i += 1) {
-    obstacles[i].y +=12;
-    obstacles[i].update();
-}
-}
-if(field.frameNo>=1500){
   if(everyinterval(20)){
     x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
@@ -130,7 +147,29 @@ if(field.frameNo>=1500){
     obstacles[i].y +=10;
     obstacles[i].update();
 }
+}
+if(field.frameNo>=1500){
+  if(everyinterval(10)){
+    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
+    y = field.canvas.height-700;  //y will take values from (720-700) below
+    obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+  }
+  for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=10;
+    obstacles[i].update();
+}
 } 
+/*if(field.frameNo>=1600){
+  if(everyinterval(30)){
+    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas
+    y = field.canvas.height-700;  //y will take values from (720-700) below
+    enemy.push(new component(80,60,"ufo.jpg", x, y,"image"));
+  }
+  for (i = 0; i < obstacles.length; i += 1) {
+    enemy[i].y +=8;
+    enemy[i].update();
+}
+}*/
 if(field.key&&field.key==37){
   myGamePiece.speedX=-5;
 }
@@ -140,6 +179,21 @@ if(field.key&&field.key==39){
 myGamePiece.newPos();    
 myGamePiece.update();
 obstacles.update();
+enemy.update();
+}
+function sound(src){
+  this.sound=document.createElement("audio");
+  this.sound.src=src;
+  this.sound.setAttribute("preload","auto");
+  this.sound.setAttribute("controls","none");
+this.sound.display="none";
+document.body.appendChild(this.sound);
+this.play=function(){
+  this.sound.play();
+}
+this.stop=function(){
+  this.sound.pause();
+}
 }
 function everyinterval(n) {
 if ((field.frameNo / n) % 1 == 0) {return true;}

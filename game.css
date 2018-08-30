@@ -2,6 +2,9 @@ body {
 background-image:url("galaxy.jpg");
 }
 canvas{
-    border: 3px solid #444;
-    background-color:#000;
+    border: 3px solid rgb(39, 7, 7);
+    background-color:rgb(10, 0, 0);
+  }
+  a { 
+color:red;
   }
