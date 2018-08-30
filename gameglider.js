@@ -2,7 +2,7 @@ var myGamePiece;
 var score,obstacles=[];
 function gameBegin(){
   myGamePiece = new component(100,180,"glider.png",700,550, "image");
-  score=new component("40px","Consolas","red",640,30,"text");
+  score=new component("40px","Consolas","red",640,40,"text");
  field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
@@ -99,15 +99,38 @@ myGamePiece.speedX=0;
 field.frameNo += 1;
 score.text="SCORE:"+field.frameNo;
 score.update();
-if(everyinterval(50)){
-  x = field.canvas.width-(Math.random()*1500);
-  y = field.canvas.height-650;  
+if(everyinterval(40)){
+  x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
+  y = field.canvas.height-700;  //y will take values from (720-700) below
   obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
 }
 for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=5;
     obstacles[i].update();
 }
+if(field.frameNo>=800){
+  for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=8;
+    obstacles[i].update();
+}
+} 
+if(field.frameNo>=1200){
+  for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=12;
+    obstacles[i].update();
+}
+}
+if(field.frameNo>=1500){
+  if(everyinterval(20)){
+    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
+    y = field.canvas.height-700;  //y will take values from (720-700) below
+    obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+  }
+  for (i = 0; i < obstacles.length; i += 1) {
+    obstacles[i].y +=10;
+    obstacles[i].update();
+}
+} 
 if(field.key&&field.key==37){
   myGamePiece.speedX=-5;
 }
