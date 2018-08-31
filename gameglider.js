@@ -1,18 +1,19 @@
 var myGamePiece;
 var score,obstacles=[];
-//var enemy=[];
-var mySound;
+var mySound,out,scoring;
 function gameBegin(){
-  myGamePiece = new component(100,180,"glider.png",700,550, "image");
+  myGamePiece = new component(90,170,"ima.png",700,520, "image");
  mySound=new sound("sound.mp3");
-  score=new component("40px","Consolas","red",640,40,"text");
+  score=new component("40px","Consolas","blue",640,40,"text");
+  out=new component("70px","Arial","red",500,300,"text");
+  scoring=new component("50px","Arial","yellow",500,400,"text");
  field.canvasArea();              /* this will call the method canvasArea of field object*/
 }
 var field={
   canvas:document.createElement("canvas"),                /*field is an object which creates canvas*/                                                                                                          
   canvasArea:function(){
 this.canvas.width=1500;
-this.canvas.height=720;
+this.canvas.height=700;
 this.context=this.canvas.getContext("2d");
 document.body.insertBefore(this.canvas,document.body.childNodes[0]);/*The canvasArea() method creates a <canvas> element and inserts it as the
 first child node of the body element*/
@@ -72,14 +73,14 @@ this.newPos=function(){
   }
 }
 this.crashWith = function(otherobj) {
-  var myleft = this.x;
-  var myright = this.x + (this.width);
-  var mytop = this.y;
-  var mybottom = this.y + (this.height);
-  var otherleft = otherobj.x;
-  var otherright = otherobj.x + (otherobj.width);
-  var othertop = otherobj.y;
-  var otherbottom = otherobj.y + (otherobj.height);
+  var myleft = this.x-7;
+  var myright = this.x-8+ (this.width);
+  var mytop = this.y-4;
+  var mybottom = this.y + (this.height)-5;
+  var otherleft = otherobj.x-8;
+  var otherright = otherobj.x + (otherobj.width)-6;
+  var othertop = otherobj.y-5;
+  var otherbottom = otherobj.y + (otherobj.height)-5;
   var crash = true;
   if ((mybottom < othertop) ||
          (mytop > otherbottom) ||
@@ -95,26 +96,22 @@ function updateGameArea(){
     if (myGamePiece.crashWith(obstacles[i])) {
       mySound.play();
       field.stop();
-      document.getElementById("score").innerHTML=score.text;
+      out.text="GAMEOVER!";
+      out.update();
+      scoring.text="YOUR SCORE="+field.frameNo;
+      scoring.update();
         return;
     } 
   }
- /* for (i = 0; i < enemy.length; i += 1) {
-    if (myGamePiece.crashWith(enemy[i])) {
-    //mySound.play();
-      field.stop();
-        return;
-    } 
-  }*/
 field.cleanTrail();
 myGamePiece.speedX=0;
 field.frameNo += 1;
 score.text="SCORE:"+field.frameNo;
 score.update();
 if(everyinterval(40)){
-  x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
-  y = field.canvas.height-720;  //y will take values from (720-700) below
-  obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+  x = field.canvas.width-(Math.random()*1300);/*obstacles can come from anywhere in width(1500) of canvas*/
+  y = field.canvas.height-690;  //y will take values from (720-700) below
+  obstacles.push(new component(80,100, "ufo2.png", x, y,"image"));
 }
 for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=5;
@@ -130,7 +127,7 @@ if(field.frameNo>=800){
   if(everyinterval(30)){
   x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
   y = field.canvas.height-700;  //y will take values from (720-700) below
-  obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+  obstacles.push(new component(80,100, "enemy1.png", x, y,"image"));
 }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=8;
@@ -141,7 +138,7 @@ if(field.frameNo>=1200){
   if(everyinterval(20)){
     x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
-    obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+    obstacles.push(new component(80,100, "enemy1.png", x, y,"image"));
   }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=10;
@@ -152,29 +149,18 @@ if(field.frameNo>=1500){
   if(everyinterval(10)){
     x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
-    obstacles.push(new component(80,100, "enemy.png", x, y,"image"));
+    obstacles.push(new component(80,100, "ufo2.png", x, y,"image"));
   }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=10;
     obstacles[i].update();
 }
 } 
-/*if(field.frameNo>=1600){
-  if(everyinterval(30)){
-    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas
-    y = field.canvas.height-700;  //y will take values from (720-700) below
-    enemy.push(new component(80,60,"ufo.jpg", x, y,"image"));
-  }
-  for (i = 0; i < obstacles.length; i += 1) {
-    enemy[i].y +=8;
-    enemy[i].update();
-}
-}*/
 if(field.key&&field.key==37){
-  myGamePiece.speedX=-5;
+  myGamePiece.speedX=-7;
 }
 if(field.key&&field.key==39){
-  myGamePiece.speedX=5;
+  myGamePiece.speedX=7;
 }
 myGamePiece.newPos();    
 myGamePiece.update();
