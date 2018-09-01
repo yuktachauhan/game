@@ -1,8 +1,8 @@
 var myGamePiece, score,obstacles=[],mySound,out,scoring;
 function gameBegin(){
-myGamePiece = new component(70,150,"ima.png",700,540, "image");
+myGamePiece = new component(70,140,"ima.png",700,560, "image");
 mySound=new sound("sound.mp3");
-score=new component("40px","Consolas","blue",640,40,"text");
+score=new component("40px","Consolas","pink",640,40,"text");
 out=new component("70px","Arial","red",520,300,"text");
 scoring=new component("50px","Arial","yellow",520,400,"text");
 field.canvasArea();              /* this will call the method canvasArea of field object*/
@@ -73,12 +73,12 @@ this.y +=this.speedY;
 this.crashWith = function(otherobj) {
   var myleft = this.x;
   var myright = this.x+ (this.width)-40;
-  var mytop = this.y;
+  var mytop = this.y-20;
   var mybottom = this.y + (this.height);
   var otherleft = otherobj.x-20;
   var otherright = otherobj.x + (otherobj.width)-20;
   var othertop = otherobj.y-10;
-  var otherbottom = otherobj.y + (otherobj.height)-10;
+  var otherbottom = otherobj.y + (otherobj.height)-30;
   var crash = true;
   if ((mybottom < othertop) ||
          (mytop > otherbottom) ||
@@ -110,16 +110,17 @@ if(everyinterval(35)){
   x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
   y = field.canvas.height-700;  //y will take values from (720-700) below
   obstacles.push(new component(60,80, "star.jpg",x,y,"image"));
+  obstacles.push(new component(80,80, "obs.png",Math.random()*1500,y,"image"));
 }
 for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=5;
     obstacles[i].update();
 }
-if(field.frameNo>=400){
+if(field.frameNo>=500){
   if(everyinterval(40)){
   x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
   y = field.canvas.height-700;  //y will take values from (720-700) below
-  obstacles.push(new component(80,80, "star.jpg",Math.random()*1500,y,"image"));
+  obstacles.push(new component(80,80, "star.jpg",Math.random()*1480,y,"image"));
   obstacles.push(new component(80,100, "enemy1.png", x, y,"image"));
 }
   for (i = 0; i < obstacles.length; i += 1) {
@@ -127,7 +128,7 @@ if(field.frameNo>=400){
     obstacles[i].update();
 }
 } 
-if(field.frameNo>=1000){
+if(field.frameNo>=1500){
   if(everyinterval(50)){
     x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
@@ -140,7 +141,7 @@ if(field.frameNo>=1000){
     obstacles[i].update();
 }
 }
-if(field.frameNo>=1400){
+if(field.frameNo>=2500){
   if(everyinterval(40)){
     x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
@@ -149,7 +150,7 @@ if(field.frameNo>=1400){
     obstacles.push(new component(60,80, "star.jpg",Math.random()*1500,y,"image"));
 }
   for (i = 0; i < obstacles.length; i += 1) {
-    obstacles[i].y +=9;
+    obstacles[i].y +=8;
     obstacles[i].update();
 }
 } 
