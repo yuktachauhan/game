@@ -16,7 +16,7 @@ this.context=this.canvas.getContext("2d");
 document.body.insertBefore(this.canvas,document.body.childNodes[0]);/*The canvasArea() method creates a <canvas> element and inserts it as the
 first child node of the body element*/
 this.frameNo=0;
- this.interval = setInterval(updateGameArea, 20);
+this.interval = setInterval(updateGameArea, 20);
  window.addEventListener('keydown',function(e){
    field.key=e.keyCode;
  })
@@ -106,35 +106,35 @@ myGamePiece.speedX=0;
 field.frameNo += 1;
 score.text="SCORE:"+field.frameNo;
 score.update();
-if(everyinterval(35)){
-  x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
-  y = field.canvas.height-700;  //y will take values from (720-700) below
-  obstacles.push(new component(60,80, "star.jpg",x,y,"image"));
-  obstacles.push(new component(80,80, "obs.png",Math.random()*1500,y,"image"));
+if(everyinterval(30)){
+  x=Math.random()*1430;/*obstacles can come from anywhere in width(1500) of canvas*/
+  y = field.canvas.height-670;  //y will take values from (720-700) below
+  obstacles.push(new component(50,60, "star.jpg",x,y,"image"));
+  obstacles.push(new component(60,80, "obs.png",Math.random()*1440,y,"image"));
 }
 for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=5;
     obstacles[i].update();
 }
 if(field.frameNo>=500){
-  if(everyinterval(40)){
-  x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
-  y = field.canvas.height-700;  //y will take values from (720-700) below
-  obstacles.push(new component(80,80, "star.jpg",Math.random()*1480,y,"image"));
-  obstacles.push(new component(80,100, "enemy1.png", x, y,"image"));
-}
+  if(everyinterval(35)){
+  x = Math.random()*1440;/*obstacles can come from anywhere in width(1500) of canvas*/
+  y = field.canvas.height-680;  //y will take values from (720-700) below
+  //obstacles.push(new component(50,60, "star.jpg",Math.random()*1450,y,"image"));
+  obstacles.push(new component(60,80, "enemy1.png", x, y,"image"));
+  }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=6;
     obstacles[i].update();
 }
 } 
 if(field.frameNo>=1500){
-  if(everyinterval(50)){
-    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
-    y = field.canvas.height-700;  //y will take values from (720-700) below
-    obstacles.push(new component(70,80, "ufo2.png", Math.random()*1500, y,"image"));
-    obstacles.push(new component(60,80, "enemy1.png", x, y,"image"));
-    obstacles.push(new component(70,70, "star.jpg",Math.random()*1500,y,"image"));
+  if(everyinterval(40)){
+    x = Math.random()*1440;/*obstacles can come from anywhere in width(1500) of canvas*/
+    y = field.canvas.height-690;  //y will take values from (720-700) below
+    obstacles.push(new component(70,80, "ufo2.png", Math.random()*1430, y,"image"));
+    //obstacles.push(new component(60,80, "enemy1.png", x, y,"image"));
+    //obstacles.push(new component(50,60, "star.jpg",Math.random()*1450,y,"image"));
   }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=7;
@@ -142,12 +142,12 @@ if(field.frameNo>=1500){
 }
 }
 if(field.frameNo>=2500){
-  if(everyinterval(40)){
-    x = field.canvas.width-(Math.random()*1500);/*obstacles can come from anywhere in width(1500) of canvas*/
+  if(everyinterval(45)){
+    x = Math.random()*1440;/*obstacles can come from anywhere in width(1500) of canvas*/
     y = field.canvas.height-700;  //y will take values from (720-700) below
-    obstacles.push(new component(80,80, "ufo2.png", x, y,"image"));
-    obstacles.push(new component(80,100, "enemy1.png",Math.random()*1500, y,"image"));
-    obstacles.push(new component(60,80, "star.jpg",Math.random()*1500,y,"image"));
+    //obstacles.push(new component(60,80, "ufo2.png", x, y,"image"));
+    obstacles.push(new component(70,80, "enemy1.png",Math.random()*1430, y,"image"));
+    //obstacles.push(new component(50,60, "star.jpg",Math.random()*1450,y,"image"));
 }
   for (i = 0; i < obstacles.length; i += 1) {
     obstacles[i].y +=8;
